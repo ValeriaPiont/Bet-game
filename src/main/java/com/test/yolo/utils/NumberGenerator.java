@@ -1,4 +1,4 @@
-package com.test.yolo.services;
+package com.test.yolo.utils;
 
 public final class NumberGenerator {
 
