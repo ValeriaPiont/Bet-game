@@ -13,7 +13,7 @@ Once the service is running, you can access it via API Documentation (Swagger): 
 
 Game API URL: http://localhost:9090/api/v1/game
 
-## Technologies and Dependencies
+### Technologies and Dependencies
 The project uses the following technologies and dependencies:
 
 - **Java Version**: The project is developed using Java version 17.
