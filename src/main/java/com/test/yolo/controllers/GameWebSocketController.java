@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.yolo.dto.BetRequestDTO;
 import com.test.yolo.dto.BetResponseDTO;
-import com.test.yolo.services.GameService;
+import com.test.yolo.service.GameService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

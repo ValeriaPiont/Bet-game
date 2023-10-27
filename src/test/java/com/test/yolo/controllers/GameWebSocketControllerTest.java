@@ -6,7 +6,7 @@ import javax.websocket.Session;
 import javax.websocket.RemoteEndpoint;
 
 import com.test.yolo.dto.BetRequestDTO;
-import com.test.yolo.services.GameService;
+import com.test.yolo.service.GameService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

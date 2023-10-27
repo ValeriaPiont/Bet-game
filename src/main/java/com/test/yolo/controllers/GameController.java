@@ -2,7 +2,7 @@ package com.test.yolo.controllers;
 
 import com.test.yolo.dto.BetRequestDTO;
 import com.test.yolo.dto.BetResponseDTO;
-import com.test.yolo.services.GameService;
+import com.test.yolo.service.GameService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

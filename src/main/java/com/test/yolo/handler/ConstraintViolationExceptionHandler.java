@@ -1,4 +1,4 @@
-package com.test.yolo;
+package com.test.yolo.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

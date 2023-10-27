@@ -1,5 +1,5 @@
-package com.test.yolo.services;
-import com.test.yolo.utils.NumberGenerator;
+package com.test.yolo.service;
+import com.test.yolo.util.NumberGenerator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;

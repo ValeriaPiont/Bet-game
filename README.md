@@ -9,7 +9,7 @@ To run this project locally, follow these steps:
 
 ```mvn spring-boot:run```
 
-Once the service is running, you can access it via API Documentation (Swagger): http://localhost:9090/swagger-ui.html.
+Once the service is running, you can access and try it out via API Documentation (Swagger): http://localhost:9090/swagger-ui.html.
 
 Game API URL: http://localhost:9090/api/v1/game
 
