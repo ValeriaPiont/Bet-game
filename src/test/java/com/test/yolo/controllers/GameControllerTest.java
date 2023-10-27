@@ -11,6 +11,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -66,7 +67,8 @@ public class GameControllerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         String expectedResponse = "{\"number\":\"Number must be between 1 and 100\"}";
-        assertEquals(expectedResponse, responseEntity.getBody());    }
+        assertEquals(expectedResponse, responseEntity.getBody());
+    }
 
     @Test
     public void shouldReturnBadRequestForNullBetAmount() {
@@ -78,7 +80,8 @@ public class GameControllerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         String expectedResponse = "{\"bet\":\"Bet amount cannot be null\"}";
-        assertEquals(expectedResponse, responseEntity.getBody());    }
+        assertEquals(expectedResponse, responseEntity.getBody());
+    }
 
     @Test
     public void shouldReturnBadRequestForNullNumber() {
@@ -90,7 +93,8 @@ public class GameControllerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         String expectedResponse = "{\"number\":\"Number cannot be null\"}";
-        assertEquals(expectedResponse, responseEntity.getBody());    }
+        assertEquals(expectedResponse, responseEntity.getBody());
+    }
 
     @Test
     public void shouldPlaceBetWithMaxValues() {

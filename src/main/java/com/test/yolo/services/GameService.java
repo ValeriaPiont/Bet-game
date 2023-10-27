@@ -16,7 +16,7 @@ public class GameService {
     private static final int RESULT_SCALE = 2;
 
     @Async
-    public CompletableFuture<BigDecimal> calculateWinAsync(BigDecimal bet, int number) {
+    public CompletableFuture<BigDecimal> calculateWinAsync(BigDecimal bet, Integer number) {
         return CompletableFuture.completedFuture(calculateWin(bet, number));
     }
 
