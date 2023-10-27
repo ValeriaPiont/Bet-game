@@ -23,19 +23,20 @@ public class GameService {
     public BigDecimal calculateWin(BigDecimal bet, int number) {
         int generatedNumber = NumberGenerator.generateRandomNumber(MAX_NUMBER);
         if (number > generatedNumber) {
-            // The purpose is to calculate the win based on the chosen number,
-            // then when number is 100, the player is essentially choosing a win.
-            // So, win should be user's bet times the multiplier, which is 99.
+            // Special rule: When the player chooses MAX_NUMBER (100), they win based on a 50% chance.
+            // This is represented by checking if the generated number is even. If it is even,
+            // the win is calculated by multiplying the bet by the WIN_MULTIPLIER (99).
+            // If the generated number is odd, the player wins nothing.
             // However, this interpretation of the business logic may be clarified with business analysts in case of real task.
             if (number == MAX_NUMBER) {
-                return getMaxWin(bet);
+                return generatedNumber % 2 == 0 ? getCalculatedWinIfNumberIs100(bet) : BigDecimal.ZERO;
             }
             return getCalculatedWin(bet, number);
         }
         return BigDecimal.ZERO;
     }
 
-    private BigDecimal getMaxWin(BigDecimal bet) {
+    private BigDecimal getCalculatedWinIfNumberIs100(BigDecimal bet) {
         return bet.multiply(BigDecimal.valueOf(WIN_MULTIPLIER)).setScale(RESULT_SCALE, RoundingMode.HALF_UP);
     }
 
@@ -43,7 +44,6 @@ public class GameService {
         BigDecimal divisor = BigDecimal.valueOf(MAX_NUMBER - number);
         BigDecimal multiplier = BigDecimal.valueOf(WIN_MULTIPLIER)
                 .divide(divisor, SCALE_FOR_DIVISION, RoundingMode.HALF_UP);
-
         return bet.multiply(multiplier).setScale(RESULT_SCALE, RoundingMode.HALF_UP);
     }
 }

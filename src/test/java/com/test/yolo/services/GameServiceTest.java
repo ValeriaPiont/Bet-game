@@ -1,4 +1,5 @@
 package com.test.yolo.services;
+import com.test.yolo.utils.NumberGenerator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +19,8 @@ public class GameServiceTest {
 
     private MockedStatic<NumberGenerator> mockedNumberGenerator;
 
+    private final int UPPER_BOUND = 100;
+
     @BeforeEach
     public void setUp() {
         mockedNumberGenerator = Mockito.mockStatic(NumberGenerator.class);
@@ -30,15 +33,40 @@ public class GameServiceTest {
 
     @Test
     public void testWinCalculationWithGreaterNumber() {
-        mockedNumberGenerator.when(() -> NumberGenerator.generateRandomNumber(100)).thenReturn(50);
+        mockNumberGenerator(50);
         BigDecimal win = gameService.calculateWin(BigDecimal.valueOf(40.5), 60);
         Assertions.assertEquals(100.24, win.doubleValue(), 0.001);
     }
 
     @Test
     public void testNoWinCalculationWithLowerNumber() {
-        mockedNumberGenerator.when(() -> NumberGenerator.generateRandomNumber(100)).thenReturn(70);
+        mockNumberGenerator(70);
         BigDecimal win = gameService.calculateWin(BigDecimal.valueOf(40.5), 60);
         Assertions.assertEquals(0.0, win.doubleValue(), 0.001);
+    }
+
+    @Test
+    public void testNoWinCalculationWithEqualNumber() {
+        mockNumberGenerator(60);
+        BigDecimal win = gameService.calculateWin(BigDecimal.valueOf(40.5), 60);
+        Assertions.assertEquals(0.0, win.doubleValue(), 0.001);
+    }
+
+    @Test
+    public void testWinCalculationWithMaximumNumberAndOddGeneratedNumber() {
+        mockNumberGenerator(60);
+        BigDecimal win = gameService.calculateWin(BigDecimal.valueOf(5.5), 100);
+        Assertions.assertEquals(544.5, win.doubleValue(), 0.001);
+    }
+
+    @Test
+    public void testNoWinCalculationWithMaximumNumberAndEvenGeneratedNumber() {
+        mockNumberGenerator(61);
+        BigDecimal win = gameService.calculateWin(BigDecimal.valueOf(40.5), 100);
+        Assertions.assertEquals(0.0, win.doubleValue(), 0.001);
+    }
+
+    private void mockNumberGenerator(int returnedValue) {
+        mockedNumberGenerator.when(() -> NumberGenerator.generateRandomNumber(UPPER_BOUND)).thenReturn(returnedValue);
     }
 }

@@ -1,4 +1,4 @@
-package com.test.yolo.services;
+package com.test.yolo;
 
 import com.test.yolo.dto.BetRequestDTO;
 import com.test.yolo.dto.BetResponseDTO;
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.core.env.Environment;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
@@ -15,13 +15,14 @@ import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RTPTest {
 
-    @Autowired
-    private Environment env;
+    @LocalServerPort
+    private int port;
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -34,19 +35,24 @@ public class RTPTest {
     public void testRTP() throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(THREAD_COUNT);
         AtomicReference<BigDecimal> totalWon = new AtomicReference<>(BigDecimal.ZERO);
+        AtomicInteger exceptionsCount = new AtomicInteger(0);
 
-        int port = getServerPort();
-
-        for (int i = 0; i < TOTAL_ROUNDS; i++) {
+        for (int i = 1; i <= TOTAL_ROUNDS; i++) {
+            int finalI = i;
             executorService.execute(() -> {
-                BetRequestDTO request = new BetRequestDTO();
-                request.setBet(BET_AMOUNT);
-                int number = (int) (Math.random() * 100) + 1;
-                request.setNumber(number);
-                ResponseEntity<BetResponseDTO> responseEntity = restTemplate.postForEntity("http://localhost:" + port + "/api/v1/game/bet", request, BetResponseDTO.class);
-                BigDecimal win = Objects.requireNonNull(responseEntity.getBody()).getWin();
-                System.out.println(win.doubleValue());
-                totalWon.updateAndGet(current -> current.add(win));
+                try {
+                    System.out.println("Round: " + finalI);
+                    BetRequestDTO request = new BetRequestDTO();
+                    request.setBet(BET_AMOUNT);
+                    int number = (int) (Math.random() * 100) + 1;
+                    request.setNumber(number);
+                    ResponseEntity<BetResponseDTO> responseEntity = restTemplate.postForEntity("http://localhost:" + port + "/api/v1/game/bet", request, BetResponseDTO.class);
+                    BigDecimal win = Objects.requireNonNull(responseEntity.getBody()).getWin();
+                    totalWon.updateAndGet(current -> current.add(win));
+                } catch (Exception e) {
+                    exceptionsCount.incrementAndGet();
+                    System.err.println("Exception in Round " + finalI + ": " + e.getMessage());
+                }
             });
         }
 
@@ -59,19 +65,5 @@ public class RTPTest {
         System.out.println("Total Spent: " + totalSpent);
         System.out.println("Total Won: " + totalWon);
         System.out.println("RTP: " + rtp + "%");
-    }
-
-    private int getServerPort() {
-        String portProperty = env.getProperty("local.server.port");
-
-        if (portProperty == null || portProperty.isEmpty()) {
-            throw new IllegalStateException("Port property is not set!");
-        }
-
-        try {
-            return Integer.parseInt(portProperty);
-        } catch (NumberFormatException ex) {
-            throw new IllegalStateException("The port property is not a valid integer: " + portProperty, ex);
-        }
     }
 }
