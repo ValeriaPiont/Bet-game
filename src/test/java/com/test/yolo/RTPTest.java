@@ -32,7 +32,7 @@ public class RTPTest {
     private static final BigDecimal BET_AMOUNT = BigDecimal.ONE;
 
     @Test
-    public void testRTP() throws InterruptedException {
+    public void shouldCalculateRTPForOneMillionGames() throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(THREAD_COUNT);
         AtomicReference<BigDecimal> totalWon = new AtomicReference<>(BigDecimal.ZERO);
         AtomicInteger exceptionsCount = new AtomicInteger(0);
